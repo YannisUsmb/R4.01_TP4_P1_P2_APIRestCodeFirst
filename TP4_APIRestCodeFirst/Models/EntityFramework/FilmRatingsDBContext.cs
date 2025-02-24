@@ -29,6 +29,9 @@ namespace TP4_APIRestCodeFirst.Models.EntityFramework
             modelBuilder.Entity<Utilisateur>(entity =>
             {
                 entity.HasKey(e => e.UtilisateurId).HasName("utilisateur_pkey");
+
+                entity.Property(e => e.Pays).HasDefaultValue("France");
+                entity.Property(e => e.DateCreation).HasDefaultValueSql("now()");
             });
 
             modelBuilder.Entity<Film>(entity =>

@@ -8,14 +8,14 @@ namespace TP4_APIRestCodeFirst.Models.EntityFramework
 {
     [Table("t_e_film_flm")]
     [Index(nameof(Titre), IsUnique = false, Name = "uqix_film_titre")]
-    public class Film
+    public partial class Film
     {
         [Key]
         [Column("flm_id")]
         public int FilmId { get; set; }
 
         [Required]
-        [Column("flm_titre", TypeName = "varchar(100)")]
+        [Column("flm_titre")]
         [StringLength(100)]
         public string Titre { get; set; } = null!;
 
@@ -28,7 +28,7 @@ namespace TP4_APIRestCodeFirst.Models.EntityFramework
         [Column("flm_duree", TypeName = "numeric(3,0)")]
         public decimal? Duree { get; set; }
 
-        [Column("flm_genre", TypeName = "varchar(30)")]
+        [Column("flm_genre")]
         [StringLength(30)]
         public string? Genre { get; set; }
 

@@ -22,11 +22,11 @@ namespace TP4_APIRestCodeFirst.Migrations
                 {
                     flm_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    flm_titre = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    flm_titre = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     flm_resume = table.Column<string>(type: "text", nullable: true),
                     flm_datesortie = table.Column<DateTime>(type: "date", nullable: true),
                     flm_duree = table.Column<decimal>(type: "numeric(3,0)", nullable: true),
-                    flm_genre = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: true)
+                    flm_genre = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -40,18 +40,18 @@ namespace TP4_APIRestCodeFirst.Migrations
                 {
                     utl_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    utl_nom = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
-                    utl_prenom = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
+                    utl_nom = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    utl_prenom = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     utl_mobile = table.Column<string>(type: "char(10)", maxLength: 10, nullable: true),
-                    utl_mail = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    utl_pwd = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false),
-                    utl_rue = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true),
-                    utl_cp = table.Column<string>(type: "char(5)", maxLength: 5, nullable: true),
-                    utl_ville = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
-                    utl_pays = table.Column<string>(type: "varchar(50) default 'France'", maxLength: 50, nullable: true),
+                    utl_mail = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    utl_pwd = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    utl_rue = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    utl_cp = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: true),
+                    utl_ville = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    utl_pays = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true, defaultValue: "France"),
                     utl_latitude = table.Column<float>(type: "real", nullable: true),
                     utl_longitude = table.Column<float>(type: "real", nullable: true),
-                    utl_datecreation = table.Column<DateTime>(type: "date default now()", maxLength: 50, nullable: false)
+                    utl_datecreation = table.Column<DateTime>(type: "date", nullable: false, defaultValueSql: "now()")
                 },
                 constraints: table =>
                 {

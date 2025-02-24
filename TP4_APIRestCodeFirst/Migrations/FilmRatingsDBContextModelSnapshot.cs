@@ -42,7 +42,7 @@ namespace TP4_APIRestCodeFirst.Migrations
 
                     b.Property<string>("Genre")
                         .HasMaxLength(30)
-                        .HasColumnType("varchar(30)")
+                        .HasColumnType("character varying(30)")
                         .HasColumnName("flm_genre");
 
                     b.Property<string>("Resume")
@@ -52,7 +52,7 @@ namespace TP4_APIRestCodeFirst.Migrations
                     b.Property<string>("Titre")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("flm_titre");
 
                     b.HasKey("FilmId")
@@ -96,13 +96,14 @@ namespace TP4_APIRestCodeFirst.Migrations
 
                     b.Property<string>("CodePostal")
                         .HasMaxLength(5)
-                        .HasColumnType("char(5)")
+                        .HasColumnType("character varying(5)")
                         .HasColumnName("utl_cp");
 
                     b.Property<DateTime>("DateCreation")
-                        .HasMaxLength(50)
-                        .HasColumnType("date default now()")
-                        .HasColumnName("utl_datecreation");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("date")
+                        .HasColumnName("utl_datecreation")
+                        .HasDefaultValueSql("now()");
 
                     b.Property<float?>("Latitude")
                         .HasColumnType("real")
@@ -115,7 +116,7 @@ namespace TP4_APIRestCodeFirst.Migrations
                     b.Property<string>("Mail")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("utl_mail");
 
                     b.Property<string>("Mobile")
@@ -125,33 +126,35 @@ namespace TP4_APIRestCodeFirst.Migrations
 
                     b.Property<string>("Nom")
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("utl_nom");
 
                     b.Property<string>("Pays")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50) default 'France'")
+                        .HasColumnType("character varying(50)")
+                        .HasDefaultValue("France")
                         .HasColumnName("utl_pays");
 
                     b.Property<string>("Prenom")
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("utl_prenom");
 
                     b.Property<string>("Pwd")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("varchar(64)")
+                        .HasColumnType("character varying(64)")
                         .HasColumnName("utl_pwd");
 
                     b.Property<string>("Rue")
                         .HasMaxLength(200)
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("character varying(200)")
                         .HasColumnName("utl_rue");
 
                     b.Property<string>("Ville")
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("utl_ville");
 
                     b.HasKey("UtilisateurId")

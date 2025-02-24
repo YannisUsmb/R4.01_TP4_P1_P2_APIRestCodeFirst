@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace TP4_APIRestCodeFirst.Models.EntityFramework
 {
     [Table("t_j_notation_not")]
-    public class Notation
+    public partial class Notation
     {
         [Key]
         [Column("utl_id")]
