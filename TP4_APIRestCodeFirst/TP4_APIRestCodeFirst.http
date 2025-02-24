@@ -1,0 +1,6 @@
+@TP4_APIRestCodeFirst_HostAddress = http://localhost:5199
+
+GET {{TP4_APIRestCodeFirst_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
