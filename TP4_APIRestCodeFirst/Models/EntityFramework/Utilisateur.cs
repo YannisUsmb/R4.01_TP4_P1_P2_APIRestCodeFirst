@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace TP4_APIRestCodeFirst.Models.EntityFramework
 {
     [Table("t_e_utilisateur_utl")]
+    [Index(nameof(Mail), IsUnique = true, Name = "uq_utilisateur_mail")]
     public class Utilisateur
     {
         [Key]
@@ -48,7 +49,7 @@ namespace TP4_APIRestCodeFirst.Models.EntityFramework
         [StringLength(50)]
         public string? Ville { get; set; }
 
-        [Column("utl_pays", TypeName = "varchar(50)")]
+        [Column("utl_pays", TypeName = "varchar(50) default 'France'")]
         [StringLength(50)]
         public string? Pays { get; set; }
 
@@ -59,8 +60,7 @@ namespace TP4_APIRestCodeFirst.Models.EntityFramework
         public float? Longitude { get; set; }
 
         [Required]
-        [Column("utl_datecreation", TypeName = "date")]
-        [DefaultValue("now()")]
+        [Column("utl_datecreation", TypeName = "date default now()")]
         [StringLength(50)]
         public DateTime DateCreation { get; set; }
 

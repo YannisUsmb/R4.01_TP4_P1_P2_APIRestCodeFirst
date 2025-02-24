@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TP4_APIRestCodeFirst.Models.EntityFramework
 {
-    [PrimaryKey("utl_id", "flm_id")]3
     [Table("t_j_notation_not")]
     public class Notation
     {
@@ -19,6 +18,7 @@ namespace TP4_APIRestCodeFirst.Models.EntityFramework
         public int FilmId { get; set; }
 
         [Column("not_note", TypeName = "integer")]
+        [Range(0, 5)]
         public int Note { get; set; }
 
         [ForeignKey(nameof(UtilisateurId))]
