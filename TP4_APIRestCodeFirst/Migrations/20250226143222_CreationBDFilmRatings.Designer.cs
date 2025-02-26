@@ -12,7 +12,7 @@ using TP4_APIRestCodeFirst.Models.EntityFramework;
 namespace TP4_APIRestCodeFirst.Migrations
 {
     [DbContext(typeof(FilmRatingsDBContext))]
-    [Migration("20250225125320_CreationBDFilmRatings")]
+    [Migration("20250226143222_CreationBDFilmRatings")]
     partial class CreationBDFilmRatings
     {
         /// <inheritdoc />

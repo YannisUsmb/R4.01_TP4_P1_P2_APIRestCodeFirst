@@ -1,7 +1,11 @@
 using TP4_APIRestCodeFirst.Models.EntityFramework;
 using Microsoft.EntityFrameworkCore;
+using static TP4_APIRestCodeFirst.Models.Repository.IDataRepository;
+using TP4_APIRestCodeFirst.Models.DataManager;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IDataRepository<Utilisateur>, UtilisateurManager>();
 
 builder.Services.AddDbContext<FilmRatingsDBContext>(options =>
   options.UseNpgsql(builder.Configuration.GetConnectionString("FilmRatingsDBContext")));

@@ -5,23 +5,35 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TP4_APIRestCodeFirst.Models.DataManager;
 using TP4_APIRestCodeFirst.Models.EntityFramework;
+using static TP4_APIRestCodeFirst.Models.Repository.IDataRepository;
 
 namespace TP4_APIRestCodeFirst.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UtilisateursController : ControllerBase
     {
-        private readonly FilmRatingsDBContext _context;
+        private readonly UtilisateurManager utilisateurManager;
+        private readonly IDataRepository<Utilisateur> dataRepository;
+        //private readonly FilmRatingsDBContext _context;
 
         /// <summary>
-        /// Constructeur du controller, la liste des devises est remplie
+        /// Constructeur du controller
         /// </summary>
+        public UtilisateursController(IDataRepository<Utilisateur> dataRepo)
+        {
+            dataRepository = dataRepo;
+        }
+        /*public UtilisateursController(dataRepository userManager)
+        {
+            dataRepository = userManager;
+        }
         public UtilisateursController(FilmRatingsDBContext context)
         {
             _context = context;
-        }
+        }*/
 
         /// <summary>
         /// Récupère (get) tous les utilisateurs
@@ -35,7 +47,8 @@ namespace TP4_APIRestCodeFirst.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<Utilisateur>>> GetUtilisateurs()
         {
-            return await _context.Utilisateurs.ToListAsync();
+            return await dataRepository.GetAllAsync();
+            //return await _context.Utilisateurs.ToListAsync();
         }
 
         /// <summary>
@@ -47,13 +60,14 @@ namespace TP4_APIRestCodeFirst.Controllers
         /// <response code="404">Quand l'utilisateur n'a pas été trouvé</response>
         /// <response code="500">Quand il y a une erreur de serveur interne</response>
         // GET: api/Utilisateurs/GetUtilisateurById/{id}
-        [HttpGet("{id}")]
+        [HttpGet("[action]/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<Utilisateur>> GetUtilisateurById(int id)
         {
-            var utilisateur = await _context.Utilisateurs.FindAsync(id);
+            var utilisateur = await dataRepository.GetByIdAsync(id);
+            //var utilisateur = await _context.Utilisateurs.FindAsync(id);
 
             if (utilisateur == null)
             {
@@ -72,13 +86,14 @@ namespace TP4_APIRestCodeFirst.Controllers
         /// <response code="404">Quand l'utilisateur n'a pas été trouvé</response>
         /// <response code="500">Quand il y a une erreur de serveur interne</response>
         // GET: api/Utilisateurs/GetUtilisateurByEmail/{email}
-        [HttpGet("{email}")]
+        [HttpGet("[action]/{email}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<Utilisateur>> GetUtilisateurByEmail(string email)
         {
-            var utilisateur = await _context.Utilisateurs.FirstOrDefaultAsync((d) => d.Mail == email);
+            var utilisateur = await dataRepository.GetByStringAsync(email);
+            //var utilisateur = await _context.Utilisateurs.FirstOrDefaultAsync((d) => d.Mail == email);
 
             if (utilisateur == null)
             {
@@ -116,6 +131,19 @@ namespace TP4_APIRestCodeFirst.Controllers
                 return BadRequest(ModelState);
             }
 
+            var userToUpdate = await dataRepository.GetByIdAsync(id);
+            if (userToUpdate == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                await dataRepository.UpdateAsync(userToUpdate.Value, utilisateur);
+                return NoContent();
+            }
+
+
+            /*
             _context.Entry(utilisateur).State = EntityState.Modified;
 
             try
@@ -133,8 +161,8 @@ namespace TP4_APIRestCodeFirst.Controllers
                     throw;
                 }
             }
-
             return NoContent();
+            */
         }
 
         /// <summary>
@@ -156,9 +184,9 @@ namespace TP4_APIRestCodeFirst.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            _context.Utilisateurs.Add(utilisateur);
-            await _context.SaveChangesAsync();
+            await dataRepository.AddAsync(utilisateur);
+            //_context.Utilisateurs.Add(utilisateur);
+            //await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUtilisateurById", new { id = utilisateur.UtilisateurId }, utilisateur);
         }
@@ -178,21 +206,23 @@ namespace TP4_APIRestCodeFirst.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteUtilisateur(int id)
         {
-            var utilisateur = await _context.Utilisateurs.FindAsync(id);
+            var utilisateur = await dataRepository.GetByIdAsync(id);
+            //var utilisateur = await _context.Utilisateurs.FindAsync(id);
             if (utilisateur == null)
             {
                 return NotFound();
             }
 
-            _context.Utilisateurs.Remove(utilisateur);
-            await _context.SaveChangesAsync();
+            await dataRepository.DeleteAsync(utilisateur.Value);
+            //_context.Utilisateurs.Remove(utilisateur);
+            //await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UtilisateurExists(int id)
+        /*private bool UtilisateurExists(int id)
         {
             return _context.Utilisateurs.Any(e => e.UtilisateurId == id);
-        }
+        }*/
     }
 }

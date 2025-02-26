@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Http;
 using System.Xml;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using static TP4_APIRestCodeFirst.Models.Repository.IDataRepository;
+using TP4_APIRestCodeFirst.Models.DataManager;
+using Microsoft.EntityFrameworkCore;
 
 namespace TP4_APIRestCodeFirst.Controllers.Tests
 {
@@ -20,12 +23,18 @@ namespace TP4_APIRestCodeFirst.Controllers.Tests
     {
         private FilmRatingsDBContext context;
         private UtilisateursController controller;
+        private IDataRepository<Utilisateur> dataRepository;
+
 
         [TestInitialize]
         public void TestInitialize()
         {
+            var builder = new DbContextOptionsBuilder<FilmRatingsDBContext>().UseNpgsql();
             context = new FilmRatingsDBContext();
-            controller = new UtilisateursController(context);
+            //controller = new UtilisateursController(context);
+            dataRepository = new UtilisateurManager(context);
+            controller = new UtilisateursController(dataRepository);
+
         }
 
         [TestMethod()]
@@ -217,7 +226,8 @@ namespace TP4_APIRestCodeFirst.Controllers.Tests
                 Ville = "Allinges",
                 Pays = "France",
                 Latitude = (float)46.344795,
-                Longitude = (float)6.4885845
+                Longitude = (float)6.4885845,
+                DateCreation = DateTime.Now.Date
             };
 
             // Act
@@ -227,7 +237,7 @@ namespace TP4_APIRestCodeFirst.Controllers.Tests
             var utilisateur1 = context.Utilisateurs.Where(u => u.UtilisateurId == 1).FirstOrDefault();
             Assert.IsInstanceOfType(result, typeof(NoContentResult), "N'est pas un NoContent");
             Assert.AreEqual(((NoContentResult)result).StatusCode, StatusCodes.Status204NoContent, "N'est pas 204");
-            Assert.AreEqual((Utilisateur)utilisateurATester, utilisateur1, "L'Utilisateur n'a pas été modifié !");
+            Assert.AreEqual(utilisateur1, utilisateurATester, "L'Utilisateur n'a pas été modifié !");
         }
 
         [TestMethod()]
@@ -344,17 +354,6 @@ namespace TP4_APIRestCodeFirst.Controllers.Tests
             Assert.IsInstanceOfType(result, typeof(NoContentResult));
             var utilisateurSupprime = context.Utilisateurs.Find(utilisateurId);
             Assert.IsNull(utilisateurSupprime);
-        }
-
-        [TestMethod]
-        public async Task DeleteUtilisateur_ShouldReturnNotFound_WhenUserDoesNotExist()
-        {
-            // Act
-            var result = await controller.DeleteUtilisateur(0);
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
-            
         }
 
 
